@@ -1,4 +1,4 @@
-# deye-pi-api
+# deye-rpi-api
 
 Tiny API for a Deye hybrid inverter. A single poller calls Deye Cloud
 `/v1.0/device/latest` every 5 minutes and caches one snapshot in memory;
@@ -22,7 +22,7 @@ GET /api/display   (header X-API-Key)
 
 ```bash
 curl -fsSL https://get.docker.com | sh && sudo usermod -aG docker $USER   # once, then re-login
-git clone <repo> && cd deye-pi-api
+git clone https://github.com/hasithakn/deye-rpi-api.git && cd deye-rpi-api
 cp .env.example .env && nano .env
 
 docker compose up -d --build                     # LAN only
