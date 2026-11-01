@@ -25,11 +25,10 @@ curl -fsSL https://get.docker.com | sh && sudo usermod -aG docker $USER   # once
 git clone https://github.com/hasithakn/deye-rpi-api.git && cd deye-rpi-api
 cp .env.example .env && nano .env
 
-docker compose up -d --build                     # LAN only
-docker compose --profile tunnel up -d --build    # LAN + Cloudflare Tunnel
+docker compose up -d --build
 
-curl -H "X-API-Key: $API_KEY" localhost:8080/api/display
-docker compose logs -f api
+curl -H "X-API-Key: $API_KEY" localhost:8090/api/display
+docker compose logs -f deye-api
 ```
 
 Update: `git pull && docker compose up -d --build`
@@ -44,6 +43,8 @@ Update: `git pull && docker compose up -d --build`
 
 ## Cloudflare
 
-1. Zero Trust → Networks → Tunnels → create tunnel, copy the token to `TUNNEL_TOKEN`.
-2. Public hostname → service `http://api:8080`.
-3. Optional: WAF rate-limit rule on `/api/*`, Cloudflare Access for a second auth layer.
+Uses an existing `cloudflared` tunnel (e.g. one running with `network_mode: host`):
+
+1. Zero Trust → Networks → Tunnels → your tunnel → Public hostname → add
+   `deye.<your-domain>` → service `http://localhost:8090`.
+2. Optional: WAF rate-limit rule on `/api/*`, Cloudflare Access for a second auth layer.
